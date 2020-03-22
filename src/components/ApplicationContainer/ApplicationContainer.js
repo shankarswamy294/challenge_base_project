@@ -28,13 +28,13 @@ class ApplicationContainer extends React.Component{
     }
 
     render(){
-        const {showLoader, should_show_loader, bankData} = this.props;
+        const {bankData} = this.props;
         return(
             <>
             {/* header */}
             <header>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand text-white"><b>Vimeo Challenge</b></a>
+                    <div className="navbar-brand text-white"><b>Vimeo Challenge</b></div>
                 </nav>
             </header>
             {/* sidebar */}
