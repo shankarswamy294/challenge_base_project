@@ -121,12 +121,12 @@ class BankData extends React.Component{
                                 <tr>
                                     <th scope="col">S.No <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Account No <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
-                                    <th scope="col">Date <br/><input type="text" className={"form-control w-75 mx-5"} onChange={(e)=>{this.dateChangeHandler(e)}}></input></th>
+                                    <th scope="col">Date <br/><input type="text" className={"form-control w-75 mx-5 invisible"} onChange={(e)=>{this.dateChangeHandler(e)}}></input></th>
                                     <th scope="col">Transaction Details <br/><input type="text" className={"form-control w-75 mx-5"} onChange={(e)=>{this.transChangeHandler(e)}}></input></th>
                                     <th scope="col">Value Date <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Withdrawal AMT <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Deposit AMT <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
-                                    <th scope="col">Balance AMT <br/><input type="text" className={"form-control w-75 mx-5"} onChange={(e)=>{this.balChangeHandler(e)}}></input></th>
+                                    <th scope="col">Balance AMT <br/><input type="text" className={"form-control w-75 mx-5 invisible"} onChange={(e)=>{this.balChangeHandler(e)}}></input></th>
                                 </tr>
                                 </thead>
                                 <tbody>
