@@ -41,6 +41,7 @@ class BankData extends React.Component{
                         data.push(d);
                     }
                 }
+                return <></>;
             });
         }else{
             data = this.props.data;
@@ -70,6 +71,7 @@ class BankData extends React.Component{
                         data.push(d);
                     }
                 }
+                return <></>;
             });
         }else{
             data = this.props.data;
@@ -99,6 +101,7 @@ class BankData extends React.Component{
                         data.push(d);
                     }
                 }
+                return <></>;
             });
         }else{
             data = this.props.data;
@@ -142,7 +145,7 @@ class BankData extends React.Component{
                                                     <td>{elem["Balance AMT"]}</td>
                                                 </tr>)
                                             }else{
-                                                return
+                                                return <></>;
                                             }
                                         })
                                 }
