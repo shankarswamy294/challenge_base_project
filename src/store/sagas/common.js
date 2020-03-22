@@ -1,28 +1,25 @@
 import axios from 'axios';
 import { put, takeLatest, takeEvery} from 'redux-saga/effects';
-import {LOGIN_REQUEST, loginResponse} from "../actions";
+import {bankDataReceived, GET_BANK_DATA, LOGIN_REQUEST, loginResponse} from "../actions";
 import Swal from 'sweetalert2';
-import {service_url, getErrorCodeMessage, getXmlParsedData} from '../../Constants';
 
-// function* loginRequest(action) {
-//     try {
-//         // axios.defaults.headers['SOAPAction'] = 'http://tempuri.org/LoginPS2';
-//
-//         const json = yield axios.post(service_url,action.data).then(response => {
-//
-//         });
-//
-//         yield put(loginResponse(true))
-//
-//     } catch (e) {
-//         Swal.fire(
-//             '',
-//             'Failed To Login',
-//             'error'
-//         )
-//     }
-// }
-//
-// export function* getUsersSaga() {
-//     yield takeLatest(LOGIN_REQUEST, loginRequest);
-// }
+function* getBankDataRequest(action) {
+    try {
+        const json = yield axios.get('http://starlord.hackerearth.com/bankAccount', action.params).then(response => {
+            return response.data
+        });
+
+        yield put(bankDataReceived(json))
+
+    } catch (e) {
+        Swal.fire(
+            '',
+            'Failed To Get Bank Data',
+            'error'
+        )
+    }
+}
+
+export function* getBankDataSaga() {
+    yield takeLatest(GET_BANK_DATA, getBankDataRequest);
+}
