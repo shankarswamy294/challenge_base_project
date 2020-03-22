@@ -1,5 +1,6 @@
 import React from "react";
-import range from 'lodash/range'
+import range from 'lodash/range';
+import orderBy from 'lodash/orderBy';
 import ReactPaginationComponent from "../ReactPaginationComponent";
 class BankData extends React.Component{
     constructor(props) {
@@ -49,71 +50,89 @@ class BankData extends React.Component{
         this.setState({presentData: data, transaction_with: e.target.value})
     }
 
-    balChangeHandler(e){
-        const {bankData, transaction_with, date_with} = this.state;
-        let data = [];
-        if(e.target.value) {
-            bankData.map(d => {
-                if(transaction_with && date_with){
-                    if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(e.target.value) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
-                        data.push(d);
-                    }
-                }else if(transaction_with){
-                    if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(e.target.value)) {
-                        data.push(d);
-                    }
-                }else if(date_with){
-                    if (d["Date"].toLowerCase().includes(e.target.value.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(e.target.value)) {
-                        data.push(d);
-                    }
-                }else {
-                    if (d["Balance AMT"].toLowerCase().includes(e.target.value)) {
-                        data.push(d);
-                    }
-                }
-                return <></>;
-            });
-        }else{
-            data = this.props.data;
-        }
-        this.setState({presentData: data, balance_amt_with: e.target.value})
-    }
+    // balChangeHandler(e){
+    //     const {bankData, transaction_with, date_with} = this.state;
+    //     let data = [];
+    //     if(e.target.value) {
+    //         bankData.map(d => {
+    //             if(transaction_with && date_with){
+    //                 if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(e.target.value) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
+    //                     data.push(d);
+    //                 }
+    //             }else if(transaction_with){
+    //                 if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(e.target.value)) {
+    //                     data.push(d);
+    //                 }
+    //             }else if(date_with){
+    //                 if (d["Date"].toLowerCase().includes(e.target.value.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(e.target.value)) {
+    //                     data.push(d);
+    //                 }
+    //             }else {
+    //                 if (d["Balance AMT"].toLowerCase().includes(e.target.value)) {
+    //                     data.push(d);
+    //                 }
+    //             }
+    //             return <></>;
+    //         });
+    //     }else{
+    //         data = this.props.data;
+    //     }
+    //     this.setState({presentData: data, balance_amt_with: e.target.value})
+    // }
+    //
+    // dateChangeHandler(e){
+    //     const {bankData, transaction_with, balance_amt_with} = this.state;
+    //     let data = [];
+    //     if(e.target.value) {
+    //         bankData.map(d => {
+    //             if(transaction_with && balance_amt_with){
+    //                 if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(balance_amt_with.toLowerCase()) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
+    //                     data.push(d);
+    //                 }
+    //             }else if(balance_amt_with){
+    //                 if (d["Balance AMT"].toLowerCase().includes(balance_amt_with.toLowerCase()) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
+    //                     data.push(d);
+    //                 }
+    //             }else if(transaction_with){
+    //                 if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
+    //                     data.push(d);
+    //                 }
+    //             }else {
+    //                 if (d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
+    //                     data.push(d);
+    //                 }
+    //             }
+    //             return <></>;
+    //         });
+    //     }else{
+    //         data = this.props.data;
+    //     }
+    //     this.setState({presentData: data, date_with: e.target.value})
+    // }
 
-    dateChangeHandler(e){
-        const {bankData, transaction_with, balance_amt_with} = this.state;
-        let data = [];
+    sortChange(e){
+        const {bankData, presentData} = this.state;
+        let data = presentData;
         if(e.target.value) {
-            bankData.map(d => {
-                if(transaction_with && balance_amt_with){
-                    if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Balance AMT"].toLowerCase().includes(balance_amt_with.toLowerCase()) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
-                        data.push(d);
-                    }
-                }else if(balance_amt_with){
-                    if (d["Balance AMT"].toLowerCase().includes(balance_amt_with.toLowerCase()) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
-                        data.push(d);
-                    }
-                }else if(transaction_with){
-                    if (d["Transaction Details"].toLowerCase().includes(transaction_with.toLowerCase()) && d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
-                        data.push(d);
-                    }
-                }else {
-                    if (d["Date"].toLowerCase().includes(e.target.value.toLowerCase())) {
-                        data.push(d);
-                    }
-                }
-                return <></>;
-            });
+            data = orderBy(data, [e.target.value], ['asc'])
+            this.setState({presentData: data});
         }else{
-            data = this.props.data;
+            this.setState({presentData: bankData});
         }
-        this.setState({presentData: data, date_with: e.target.value})
     }
 
     render() {
-        const {bankData, offset, limit, presentData} = this.state;
+        const {offset, limit, presentData} = this.state;
         let data = range(offset*limit, offset*limit+10);
         return(
             <>
+                <div className={"m-3"}>
+                <span><select className={"form-control w-25"} placeholder={'Sort'} onChange={(e)=>this.sortChange(e)}>
+                    <option value={""}>Sort By</option>
+                    <option value={"Date"}>Date</option>
+                    <option value={"Value Date"}>Value Date</option>
+                    <option value={"Balance AMT"}>Balance AMT</option>
+                </select></span></div>
                 <div className={"row mx-3 mt-3"}>
                     <div className={"col-12"}>
                             <table className="table">
@@ -122,7 +141,7 @@ class BankData extends React.Component{
                                     <th scope="col">S.No <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Account No <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Date <br/><input type="text" className={"form-control w-75 mx-5 invisible"} onChange={(e)=>{this.dateChangeHandler(e)}}></input></th>
-                                    <th scope="col">Transaction Details <br/><input type="text" className={"form-control w-75 mx-5"} onChange={(e)=>{this.transChangeHandler(e)}}></input></th>
+                                    <th scope="col">Transaction Details <br/><input type="text" className={"form-control w-75 mx-5"} placeholder={'Search'} onChange={(e)=>{this.transChangeHandler(e)}}></input></th>
                                     <th scope="col">Value Date <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Withdrawal AMT <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
                                     <th scope="col">Deposit AMT <br/><input type="text" className={"form-control w-75 mx-5 invisible"} /></th>
